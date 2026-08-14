@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freedom, pending approval</title>
+
+<!-- online assets: Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,600;1,6..96,400&family=Spectral:wght@300;400;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --ink:#16233A;
+    --saffron:#D9812B;
+    --green:#1C6B4A;
+    --khadi:#EDE8DA;
+    --card:#F5F1E6;
+    --ash:#7C7566;
+    --rule:rgba(22,35,58,.16);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+
+  body{
+    margin:0;
+    min-height:100vh;
+    color:var(--ink);
+    background-color:var(--khadi);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(22,35,58,.030) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(90deg, rgba(22,35,58,.022) 0 1px, transparent 1px 4px);
+    font-family:"Spectral", Georgia, serif;
+    font-size:17px;
+    line-height:1.6;
+  }
+
+  .sheet{max-width:760px; margin:0 auto; padding:56px 24px 80px}
+
+  /* ---------- masthead ---------- */
+
+  .eyebrow{
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:11px; font-weight:600; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--ash);
+    display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  }
+  .eyebrow .bar{flex:1 1 30px; height:1px; background:var(--rule); min-width:16px}
+
+  .chakra{display:block; margin:22px 0 18px}
+
+  h1{
+    font-family:"Bodoni Moda", Didot, Georgia, serif;
+    font-weight:400;
+    font-size:clamp(38px, 8vw, 66px);
+    line-height:1; letter-spacing:-.015em;
+    margin:0 0 16px; max-width:12ch;
+  }
+  h1 em{font-style:italic; color:var(--saffron)}
+
+  .standfirst{margin:0 0 34px; max-width:46ch; color:var(--ash); font-size:17px}
+
+  /* ---------- deck ---------- */
+
+  .deck-wrap{perspective:1400px}
+
+  .deck{
+    position:relative;
+    height:clamp(430px, 66vh, 520px);
+    transform-style:preserve-3d;
+  }
+
+  .card{
+    position:absolute; inset:0;
+    background:var(--card);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(22,35,58,.026) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(90deg, rgba(22,35,58,.018) 0 1px, transparent 1px 4px);
+    border:1.5px solid var(--ink);
+    border-radius:4px;
+    padding:38px 40px 30px;
+    display:flex; flex-direction:column;
+    overflow:hidden;
+    transform-origin:50% 100%;
+    transform:
+      translateY(calc(var(--i) * -13px))
+      scale(calc(1 - var(--i) * .045))
+      rotate(calc(var(--i) * -1.15deg));
+    z-index:calc(20 - var(--i));
+    box-shadow:0 12px 28px -18px rgba(22,35,58,.55);
+    transition:transform .6s cubic-bezier(.22,.9,.24,1), opacity .45s ease, box-shadow .4s ease;
+    will-change:transform;
+  }
+
+  .card[data-hidden="true"]{opacity:0; pointer-events:none}
+  .card.top{cursor:pointer; box-shadow:0 22px 44px -22px rgba(22,35,58,.6)}
+  .card.top:hover{transform:translateY(-6px) scale(1.008) rotate(0deg)}
+  .card.top:focus-visible{outline:3px solid var(--saffron); outline-offset:4px}
+
+  /* the deal-to-back animation */
+  .card.leaving{
+    transform:translateX(-118%) translateY(26px) rotate(-13deg) scale(.94);
+    opacity:0;
+    transition-duration:.52s;
+  }
+  .card.no-anim{transition:none !important}
+
+  /* ---------- card innards ---------- */
+
+  .card-no{
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:11px; font-weight:600; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--saffron);
+    margin-bottom:16px;
+    display:flex; align-items:center; gap:9px;
+  }
+  .card-no svg{width:14px; height:14px; stroke-width:1.9}
+
+  .card h2{
+    font-family:"Bodoni Moda", Georgia, serif;
+    font-weight:400;
+    font-size:clamp(26px, 5vw, 36px);
+    line-height:1.1; letter-spacing:-.01em;
+    margin:0 0 18px; max-width:18ch;
+  }
+
+  .card p{margin:0 0 13px; max-width:46ch; font-size:16.5px}
+
+  .card-foot{
+    margin-top:auto; padding-top:22px;
+    border-top:1px solid var(--rule);
+    display:flex; justify-content:space-between; align-items:flex-end;
+    gap:20px; flex-wrap:wrap;
+  }
+
+  .facts{
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:10.5px; letter-spacing:.1em; color:var(--ash);
+    line-height:1.9; margin:0;
+  }
+  .facts b{color:var(--ink); font-weight:600}
+
+  .stamp{
+    flex:0 0 auto;
+    padding:8px 14px 7px;
+    border:2.5px solid currentColor; border-radius:3px;
+    color:var(--saffron);
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:12px; font-weight:600; letter-spacing:.15em; text-transform:uppercase;
+    transform:rotate(-4deg); opacity:.85; mix-blend-mode:multiply;
+    position:relative; text-align:center;
+  }
+  .stamp::after{content:""; position:absolute; inset:3px; border:1px solid currentColor; border-radius:1px; opacity:.5}
+  .stamp small{display:block; font-size:9px; letter-spacing:.08em; opacity:.75; margin-top:2px}
+  .stamp.green{color:var(--green); transform:rotate(3deg)}
+  .stamp.flat{transform:rotate(-1.5deg)}
+
+  /* ask card list */
+  .asks{list-style:none; margin:0; padding:0}
+  .asks li{
+    display:flex; gap:14px; align-items:baseline;
+    padding:13px 0; border-bottom:1px solid var(--rule);
+    font-family:"Bodoni Moda", Georgia, serif; font-size:18px; line-height:1.35;
+  }
+  .asks li:last-child{border-bottom:0}
+  .asks span{
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:10.5px; color:var(--green); font-weight:600; flex:0 0 auto;
+  }
+
+  .card.sign-card{justify-content:center; text-align:center; align-items:center}
+  .card.sign-card blockquote{
+    font-family:"Bodoni Moda", Georgia, serif; font-style:italic;
+    font-size:clamp(22px, 4.4vw, 30px); line-height:1.3;
+    margin:0 0 26px; max-width:20ch;
+  }
+  .card.sign-card .who{
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:10.5px; letter-spacing:.16em; text-transform:uppercase; color:var(--ash);
+  }
+  .card.sign-card .who b{display:block; color:var(--ink); margin-top:5px; letter-spacing:.12em}
+
+  /* ---------- controls ---------- */
+
+  .controls{
+    margin-top:30px;
+    display:flex; align-items:center; justify-content:space-between;
+    gap:18px; flex-wrap:wrap;
+  }
+
+  .pips{display:flex; gap:7px}
+  .pip{
+    width:26px; height:3px; border-radius:2px;
+    background:var(--rule); border:0; padding:0; cursor:pointer;
+    transition:background .3s ease, width .3s ease;
+  }
+  .pip[aria-current="true"]{background:var(--saffron); width:38px}
+  .pip:focus-visible{outline:2px solid var(--ink); outline-offset:3px}
+
+  .next{
+    display:inline-flex; align-items:center; gap:9px;
+    background:none; border:1.5px solid var(--ink); border-radius:3px;
+    padding:9px 16px; cursor:pointer; color:var(--ink);
+    font-family:"JetBrains Mono", ui-monospace, monospace;
+    font-size:11px; font-weight:600; letter-spacing:.16em; text-transform:uppercase;
+    transition:background .25s ease, color .25s ease;
+  }
+  .next:hover{background:var(--ink); color:var(--card)}
+  .next:focus-visible{outline:3px solid var(--saffron); outline-offset:3px}
+  .next svg{width:15px; height:15px; stroke-width:2}
+
+  /* ---------- motion / responsive ---------- */
+
+  @media (prefers-reduced-motion: reduce){
+    .card, .card.leaving{transition-duration:.001s !important}
+    .card.top:hover{transform:
+      translateY(0) scale(1) rotate(0deg)}
+  }
+
+  @media (max-width:640px){
+    .sheet{padding:40px 18px 64px}
+    .deck{height:clamp(460px, 74vh, 540px)}
+    .card{padding:28px 24px 24px}
+    .card p{font-size:16px}
+    .card-foot{flex-direction:column; align-items:flex-start}
+    .controls{justify-content:center}
+  }
+</style>
+</head>
+<body>
+<main class="sheet">
+
+  <header>
+    <div class="eyebrow">
+      <span>15 August 2026</span>
+      <span class="bar"></span>
+      <span>Tap a card</span>
+    </div>
+
+    <svg class="chakra" width="40" height="40" viewBox="0 0 100 100" aria-hidden="true">
+      <circle cx="50" cy="50" r="44" fill="none" stroke="#16233A" stroke-width="3"/>
+      <circle cx="50" cy="50" r="6" fill="#16233A"/>
+      <g stroke="#16233A" stroke-width="1.6">
+        <line x1="50" y1="8" x2="50" y2="92"/><line x1="8" y1="50" x2="92" y2="50"/>
+        <line x1="20.3" y1="20.3" x2="79.7" y2="79.7"/><line x1="79.7" y1="20.3" x2="20.3" y2="79.7"/>
+        <line x1="61.9" y1="9.4" x2="38.1" y2="90.6"/><line x1="38.1" y1="9.4" x2="61.9" y2="90.6"/>
+        <line x1="9.4" y1="38.1" x2="90.6" y2="61.9"/><line x1="9.4" y1="61.9" x2="90.6" y2="38.1"/>
+        <line x1="29.7" y1="12.4" x2="70.3" y2="87.6"/><line x1="70.3" y1="12.4" x2="29.7" y2="87.6"/>
+        <line x1="12.4" y1="29.7" x2="87.6" y2="70.3"/><line x1="12.4" y1="70.3" x2="87.6" y2="29.7"/>
+      </g>
+    </svg>
+
+    <h1>Freedom, <em>pending approval</em></h1>
+    <p class="standfirst">Today the country marks the day it stopped waiting for permission. Here are the things I'm still waiting on.</p>
+  </header>
+
+  <div class="deck-wrap">
+    <div class="deck" id="deck" aria-live="polite">
+
+      <article class="card" role="button" tabindex="0">
+        <div class="card-no"><i data-lucide="calendar-off"></i> Article I</div>
+        <h2>The Saturday that isn't mine</h2>
+        <p>A six-day week doesn't take one day. It takes the evening before it and the morning after it too.</p>
+        <p>There's no stretch long enough to travel, to see family properly, to build something of my own, or to simply stop.</p>
+        <p>A five-day week isn't time off from the work. It's what makes me good at it on Monday.</p>
+        <div class="card-foot">
+          <p class="facts">DAYS WORKED · <b>6 of 7</b><br>FULL WEEKENDS · <b>None</b></p>
+          <div class="stamp">Still working<small>Every Saturday</small></div>
+        </div>
+      </article>
+
+      <article class="card" role="button" tabindex="-1">
+        <div class="card-no"><i data-lucide="ticket"></i> Article II</div>
+        <h2>Tickets raised, tickets unread</h2>
+        <p>The HRMS exists so requests have a paper trail. Mine have the trail and nothing at the end of it — raised, logged, then quiet.</p>
+        <p>No owner, no status change, not even a rejection I could argue with.</p>
+        <p>A system that accepts requests but never answers them isn't a process. It's a waiting room with no door.</p>
+        <div class="card-foot">
+          <p class="facts">CHANNEL · <b>HRMS ticket</b><br>ACKNOWLEDGED · <b>No</b></p>
+          <div class="stamp green">Open — no owner<small>Status unchanged</small></div>
+        </div>
+      </article>
+
+      <article class="card" role="button" tabindex="-1">
+        <div class="card-no"><i data-lucide="mail-x"></i> Article III</div>
+        <h2>Sent, delivered, unanswered</h2>
+        <p>Emails go out and weeks go past. I follow up. I follow up again. Meanwhile the thing that needed a decision sits still, and so do I.</p>
+        <p>I'd rather have a "no" in two days than silence for three weeks. A reply costs a minute. Not replying costs somebody else's month.</p>
+        <div class="card-foot">
+          <p class="facts">FOLLOW-UPS · <b>Multiple</b><br>RESPONSE · <b>Pending</b></p>
+          <div class="stamp flat">No reply<small>Weeks elapsed</small></div>
+        </div>
+      </article>
+
+      <article class="card" role="button" tabindex="-1">
+        <div class="card-no"><i data-lucide="flag"></i> What I'd call freedom</div>
+        <h2>Three small independences</h2>
+        <ul class="asks">
+          <li><span>01</span> A two-day weekend, so rest is a schedule and not a favour.</li>
+          <li><span>02</span> Every HRMS ticket gets an owner and a reply — yes or no, but a reply.</li>
+          <li><span>03</span> An answer to an email inside a week, even if it's "not yet."</li>
+        </ul>
+      </article>
+
+      <article class="card sign-card" role="button" tabindex="-1">
+        <blockquote>Independence was never only the absence of rules. It was about being answered.</blockquote>
+        <div class="who">Submitted anonymously<b>15 August 2026</b></div>
+      </article>
+
+    </div>
+  </div>
+
+  <div class="controls">
+    <div class="pips" id="pips" role="tablist" aria-label="Cards"></div>
+    <button class="next" id="next">Next card <i data-lucide="arrow-right"></i></button>
+  </div>
+
+</main>
+
+<!-- online assets: Lucide icon set -->
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script>
+  if (window.lucide) lucide.createIcons();
+
+  const deck  = document.getElementById('deck');
+  const pips  = document.getElementById('pips');
+  const next  = document.getElementById('next');
+  let order   = Array.from(deck.children);
+  let busy    = false;
+
+  order.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'pip';
+    b.setAttribute('role', 'tab');
+    b.setAttribute('aria-label', 'Card ' + (i + 1));
+    b.addEventListener('click', () => { if (!busy) advanceTo(i); });
+    pips.appendChild(b);
+  });
+
+  function render() {
+    order.forEach((el, i) => {
+      el.style.setProperty('--i', i);
+      el.classList.toggle('top', i === 0);
+      el.dataset.hidden = i > 2 ? 'true' : 'false';
+      el.tabIndex = i === 0 ? 0 : -1;
+      el.setAttribute('aria-hidden', i === 0 ? 'false' : 'true');
+    });
+    const front = order[0];
+    const idx = Array.from(deck.children).indexOf(front);
+    Array.from(pips.children).forEach((p, i) =>
+      p.setAttribute('aria-current', i === idx ? 'true' : 'false')
+    );
+  }
+
+  function advance() {
+    if (busy) return;
+    busy = true;
+    const card = order[0];
+    card.classList.add('leaving');
+
+    setTimeout(() => {
+      order.push(order.shift());
+      card.classList.add('no-anim');
+      card.classList.remove('leaving');
+      render();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        card.classList.remove('no-anim');
+        busy = false;
+      }));
+    }, 540);
+  }
+
+  function advanceTo(targetIdx) {
+    const target = Array.from(deck.children)[targetIdx];
+    if (order[0] === target) return;
+    let steps = order.indexOf(target);
+    const step = () => { advance(); if (--steps > 0) setTimeout(step, 130); };
+    step();
+  }
+
+  deck.addEventListener('click', e => {
+    const card = e.target.closest('.card');
+    if (card && card === order[0]) advance();
+  });
+
+  deck.addEventListener('keydown', e => {
+    if ((e.key === 'Enter' || e.key === ' ') && e.target === order[0]) {
+      e.preventDefault();
+      advance();
+    }
+  });
+
+  next.addEventListener('click', advance);
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') advance();
+  });
+
+  render();
+</script>
+</body>
+</html>
